@@ -34,7 +34,7 @@ app.delete("/", async (req, res) => {
       return res.send({ message: "Sprint does not exist in sprint list" });
     }
   } catch (error) {
-    return res.status(404).send({ message: "Something went wrong" });
+    return res.status(404).send({ message: error });
   }
 });
 
