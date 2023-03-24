@@ -19,13 +19,13 @@ app.post("/new", async (req, res) => {
     const transporter = await nodemailer.createTransport({
       service: "gmail",
       auth: {
-        user: "justprintkarodotcom@gmail.com",
-        pass: "pyspuosivhvulyll",
+        user: "agrawaljoy1@gmail.com",
+        pass: "zxkyjqfuhiizmxrg",
       },
     });
 
     const mailOptions = {
-      from: "justprintkarodotcom@gmail.com",
+      from: "agrawaljoy1@gmail.com",
       to: email,
       subject: "OTP",
       text: `${OTP} This OTP will be valid for next 10 minutes.`,
@@ -50,8 +50,6 @@ app.post("/register", async (req, res) => {
     if (getUser.OTP != +OTP) {
       return res.send({ message: "Incorrect OTP" });
     }
-    let cart = await Order.find({ user: getUser._id });
-    let order = await Cart.find({ userId: getUser._id });
     const token = jwt.sign({ _id: getUser._id }, process.env.JWT_SECRET, {
       expiresIn: process.env.JWT_EXPIRE,
     });
@@ -59,8 +57,6 @@ app.post("/register", async (req, res) => {
       message: "user registered successfully",
       token,
       user: getUser,
-      cart,
-      order,
     });
   } catch (error) {
     return res.status(404).send({ message: "error" });
@@ -77,14 +73,10 @@ app.post("/googleregister", async (req, res) => {
       const token = jwt.sign({ _id: getUser._id }, process.env.JWT_SECRET, {
         expiresIn: process.env.JWT_EXPIRE,
       });
-      let order = await Order.find({ user: getUser._id });
-      let cart = await Cart.find({ userId: getUser._id });
       return res.status(201).send({
         message: "user registered successfully",
         token,
         user: getUser,
-        cart,
-        order,
       });
     }
     const user = await User.create({ ...req.body });
@@ -95,8 +87,6 @@ app.post("/googleregister", async (req, res) => {
       message: "user registered successfully",
       token,
       user,
-      cart: [],
-      order: [],
     });
   } catch (error) {
     return res.status(404).send({ message: "error" });
@@ -116,13 +106,13 @@ app.post("/login", async (req, res) => {
     const transporter = await nodemailer.createTransport({
       service: "gmail",
       auth: {
-        user: "justprintkarodotcom@gmail.com",
-        pass: "pyspuosivhvulyll",
+        user: "agrawaljoy1@gmail.com",
+        pass: "zxkyjqfuhiizmxrg",
       },
     });
 
     const mailOptions = {
-      from: "justprintkarodotcom@gmail.com",
+      from: "agrawaljoy1@gmail.com",
       to: email,
       subject: "OTP",
       text: `${OTP} This OTP will be valid for next 10 minutes.`,
