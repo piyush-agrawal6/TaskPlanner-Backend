@@ -1,4 +1,6 @@
 const User = require("./userModel");
+const Task = require("../Tasks/taskModel");
+const Sprint = require("../Sprints/sprintModel");
 const express = require("express");
 const app = express.Router();
 const jwt = require("jsonwebtoken");
@@ -43,18 +45,22 @@ app.post("/new", async (req, res) => {
 //Register new User
 app.post("/register", async (req, res) => {
   try {
-    const { OTP, email } = req.body;
-    const getUser = await User.findOne({ email });
-    if (getUser.OTP != +OTP) {
+    const { OTP, email, organization } = req.body;
+    const user = await User.findOne({ email });
+    if (user.OTP != +OTP) {
       return res.send({ message: "Incorrect OTP" });
     }
-    const token = jwt.sign({ _id: getUser._id }, process.env.JWT_SECRET, {
+    const task = await User.find({ organization });
+    const sprint = await User.find({ organization });
+    const token = jwt.sign({ _id: user._id }, process.env.JWT_SECRET, {
       expiresIn: process.env.JWT_EXPIRE,
     });
     return res.status(201).send({
       message: "user registered successfully",
       token,
-      user: getUser,
+      user,
+      task,
+      sprint,
     });
   } catch (error) {
     return res.status(404).send({ message: "error" });
@@ -68,6 +74,8 @@ app.post("/googleregister", async (req, res) => {
     const getUser = await User.findOne({ email });
     if (getUser) {
       await User.findByIdAndUpdate(getUser._id, { avatar });
+      const task = await User.find({ organization: getUser.organization });
+      const sprint = await User.find({ organization: getUser.organization });
       const token = jwt.sign({ _id: getUser._id }, process.env.JWT_SECRET, {
         expiresIn: process.env.JWT_EXPIRE,
       });
@@ -75,9 +83,13 @@ app.post("/googleregister", async (req, res) => {
         message: "user registered successfully",
         token,
         user: getUser,
+        task,
+        sprint,
       });
     }
     const user = await User.create({ ...req.body });
+    const task = await User.find({ organization: "default" });
+    const sprint = await User.find({ organization: "default" });
     const token = jwt.sign({ _id: user._id }, process.env.JWT_SECRET, {
       expiresIn: process.env.JWT_EXPIRE,
     });
@@ -85,6 +97,8 @@ app.post("/googleregister", async (req, res) => {
       message: "user registered successfully",
       token,
       user,
+      task,
+      sprint,
     });
   } catch (error) {
     return res.status(404).send({ message: "error" });
