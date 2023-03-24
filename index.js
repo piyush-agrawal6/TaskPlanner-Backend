@@ -16,16 +16,14 @@ app.use(express.json());
 app.use(cors());
 
 //routes imports
-const productRoutes = require("./src/features/Products/productRoute");
 const userRoutes = require("./src/features/Users/userRoute");
-const orderRoutes = require("./src/features/Orders/orderRoute");
 const taskRoutes = require("./src/features/Tasks/taskRoute");
+const sprintRoutes = require("./src/features/Sprints/sprintRoute");
 
 //routes
-app.use("/product", productRoutes);
 app.use("/user", userRoutes);
-app.use("/order", orderRoutes);
 app.use("/task", taskRoutes);
+app.use("/sprint", sprintRoutes);
 
 //listening
 app.listen(process.env.PORT, async () => {
