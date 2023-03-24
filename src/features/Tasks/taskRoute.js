@@ -45,20 +45,18 @@ app.post("/", async (req, res) => {
 //   }
 // });
 
-app.delete("/", async (req, res) => {
+app.delete("/delete", async (req, res) => {
   try {
-    const { id } = req.body;
-    const taskItem = await Task.findById(id);
-    if (taskItem) {
-      const task = await Task.findByIdAndDelete(id);
+    const id = req.query.id;
+    const sprintItem = await Task.findById(id);
+    if (sprintItem) {
+      await Task.findByIdAndDelete(id);
       return res.status(200).send({ message: `Task deleted successfully` });
     } else {
-      return res
-        .status(404)
-        .send({ message: "Task does not exist in tasklist" });
+      return res.send({ message: "Task does not exist in sprint list" });
     }
   } catch (error) {
-    return res.status(404).send({ message: "Something went wrong" });
+    return res.status(404).send({ message: error });
   }
 });
 
