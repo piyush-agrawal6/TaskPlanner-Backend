@@ -1,4 +1,5 @@
 const Task = require("./taskModel");
+const User = require("../Users/userModel");
 const express = require("express");
 const app = express.Router();
 
@@ -13,8 +14,10 @@ app.get("/", async (req, res) => {
 });
 
 app.post("/", async (req, res) => {
+  let { id } = req.body;
+  let user = await User.findOne({ _id: id });
   try {
-    const task = await Task.create(req.body);
+    const task = await Task.create({ ...req.body, assignee: user });
     return res.status(201).send({ message: `Task Added Successfully` });
   } catch (error) {
     return res.send({ message: "Something went wrong" });
