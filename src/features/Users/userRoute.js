@@ -149,49 +149,36 @@ app.post("/login", async (req, res) => {
 
 //get users
 app.get("/", async (req, res) => {
+  const { organization } = req.query;
   try {
-    const user = await User.find();
+    const user = await User.find({ organization });
     return res.status(200).send({ success: true, user });
   } catch (error) {
     return res.status(404).send({ message: error.message });
   }
 });
 
-//get users details
-app.get("/details", async (req, res) => {
-  try {
-    const user = await User.findById(req.query.id);
-    return res.status(200).send({ success: true, user });
-  } catch (error) {
-    return res.status(404).send({ error: error.message });
-  }
-});
-
 //update user
 app.put("/update", async (req, res) => {
   try {
-    const user = await User.findByIdAndUpdate(req.query.id, req.body, {
-      new: true,
-    });
+    const user = await User.findByIdAndUpdate(req.query.id, req.body);
     return res.status(200).send({ message: "User updated successfully", user });
   } catch (error) {
     return res.status(404).send({ error: error.message });
   }
 });
-+(
-  //delete user
-  app.delete("/delete", async (req, res, next) => {
-    try {
-      const user = await User.findByIdAndDelete(req.query.id);
-      return res.status(200).send({
-        success: true,
-        message: "User deleted successfully",
-        user,
-      });
-    } catch (error) {
-      return res.status(404).send({ error: error.message });
-    }
-  })
-);
+
+//delete user
+app.delete("/delete", async (req, res) => {
+  try {
+    const user = await User.findByIdAndDelete(req.query.id);
+    return res.status(200).send({
+      success: true,
+      message: "User deleted successfully",
+    });
+  } catch (error) {
+    return res.status(404).send({ error: error.message });
+  }
+});
 
 module.exports = app;
