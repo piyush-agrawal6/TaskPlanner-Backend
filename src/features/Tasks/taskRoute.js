@@ -18,7 +18,7 @@ app.post("/", async (req, res) => {
   let user = await User.findOne({ _id: id });
   try {
     const task = await Task.create({ ...req.body, assignee: user });
-    return res.status(201).send({ message: `Task Added Successfully` });
+    return res.status(201).send({ message: `Task Added Successfully`, task });
   } catch (error) {
     return res.send({ message: "Something went wrong" });
   }
