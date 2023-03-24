@@ -23,12 +23,12 @@ app.post("/", async (req, res) => {
   }
 });
 
-app.delete("/", async (req, res) => {
+app.delete("/delete", async (req, res) => {
   try {
-    const { id } = req.query;
+    const id = req.query.id;
     const sprintItem = await Sprint.findById(id);
     if (sprintItem) {
-      const sprint = await Sprint.findByIdAndDelete(id);
+      await Sprint.findByIdAndDelete(id);
       return res.status(200).send({ message: `Sprint deleted successfully` });
     } else {
       return res.send({ message: "Sprint does not exist in sprint list" });
