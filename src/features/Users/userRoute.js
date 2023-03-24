@@ -1,6 +1,4 @@
 const User = require("./userModel");
-const Cart = require("../Carts/cartModel");
-const Order = require("../Orders/orderModel");
 const express = require("express");
 const app = express.Router();
 const jwt = require("jsonwebtoken");

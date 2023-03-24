@@ -16,7 +16,7 @@ const userSchema = new mongoose.Schema(
     },
     organization: {
       type: String,
-      default: "@default",
+      default: "default",
     },
     OTP: {
       type: Number,

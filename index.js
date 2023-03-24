@@ -19,13 +19,13 @@ app.use(cors());
 const productRoutes = require("./src/features/Products/productRoute");
 const userRoutes = require("./src/features/Users/userRoute");
 const orderRoutes = require("./src/features/Orders/orderRoute");
-const cartRoutes = require("./src/features/Carts/cartRoute");
+const taskRoutes = require("./src/features/Tasks/taskRoute");
 
 //routes
 app.use("/product", productRoutes);
 app.use("/user", userRoutes);
 app.use("/order", orderRoutes);
-app.use("/cart", cartRoutes);
+app.use("/task", taskRoutes);
 
 //listening
 app.listen(process.env.PORT, async () => {
