@@ -6,7 +6,7 @@ app.get("/", async (req, res) => {
   const { organization } = req.query;
   try {
     const tasks = await Task.find({ organization });
-    return res.status(200).send({ message: tasks });
+    return res.status(200).send({ Tasks: tasks });
   } catch (error) {
     return res.status(404).send({ message: "error" });
   }
