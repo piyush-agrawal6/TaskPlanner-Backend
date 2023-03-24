@@ -14,8 +14,10 @@ app.get("/", async (req, res) => {
 
 app.post("/", async (req, res) => {
   try {
-    const sprints = await Sprint.create(req.body);
-    return res.status(201).send({ message: `Sprint Added Successfully` });
+    const sprint = await Sprint.create(req.body);
+    return res
+      .status(201)
+      .send({ message: `Sprint Added Successfully`, sprint });
   } catch (error) {
     return res.send({ message: "Something went wrong" });
   }
