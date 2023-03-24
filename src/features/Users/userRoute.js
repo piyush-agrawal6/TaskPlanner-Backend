@@ -50,6 +50,7 @@ app.post("/register", async (req, res) => {
     if (user.OTP != +OTP) {
       return res.send({ message: "Incorrect OTP" });
     }
+    const allUsers = await User.find({ organization });
     const task = await Task.find({ organization });
     const sprint = await Sprint.find({ organization });
     const token = jwt.sign({ _id: user._id }, process.env.JWT_SECRET, {
@@ -61,6 +62,7 @@ app.post("/register", async (req, res) => {
       user,
       task,
       sprint,
+      allUsers,
     });
   } catch (error) {
     return res.status(404).send({ message: "error" });
@@ -74,6 +76,7 @@ app.post("/googleregister", async (req, res) => {
     const getUser = await User.findOne({ email });
     if (getUser) {
       await User.findByIdAndUpdate(getUser._id, { avatar });
+      const allUsers = await User.find({ organization: getUser.organization });
       const task = await Task.find({ organization: getUser.organization });
       const sprint = await Sprint.find({ organization: getUser.organization });
       const token = jwt.sign({ _id: getUser._id }, process.env.JWT_SECRET, {
@@ -85,9 +88,11 @@ app.post("/googleregister", async (req, res) => {
         user: getUser,
         task,
         sprint,
+        allUsers,
       });
     }
     const user = await User.create({ ...req.body });
+    const allUsers = await User.find({ organization: "default" });
     const task = await Task.find({ organization: "default" });
     const sprint = await Sprint.find({ organization: "default" });
     const token = jwt.sign({ _id: user._id }, process.env.JWT_SECRET, {
@@ -99,6 +104,7 @@ app.post("/googleregister", async (req, res) => {
       user,
       task,
       sprint,
+      allUsers,
     });
   } catch (error) {
     return res.status(404).send({ message: "error" });
