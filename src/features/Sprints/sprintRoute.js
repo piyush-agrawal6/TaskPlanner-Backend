@@ -26,7 +26,7 @@ app.post("/", async (req, res) => {
 app.delete("/", async (req, res) => {
   try {
     const { id } = req.query;
-    const sprintItem = await Sprint.findOne({ _id: id });
+    const sprintItem = await Sprint.findById(id);
     if (sprintItem) {
       const sprint = await Sprint.findByIdAndDelete(id);
       return res.status(200).send({ message: `Sprint deleted successfully` });
