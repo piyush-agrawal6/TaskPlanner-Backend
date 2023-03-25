@@ -41,6 +41,8 @@ app.delete("/delete", async (req, res) => {
 
 //update user
 app.put("/update", async (req, res) => {
+
+  let  taskid  = req.query.taskid;
   let { id } = req.body;
   let user = await User.findOne({ _id: id });
   let data = { ...req.body };
@@ -48,7 +50,7 @@ app.put("/update", async (req, res) => {
     data["assignee"] = user;
   }
   try {
-    const task = await Task.findByIdAndUpdate(id, data);
+    const task = await Task.findByIdAndUpdate(taskid, data);
     return res.status(200).send({ message: "Task updated successfully", task });
   } catch (error) {
     return res.status(404).send({ error: error.message });
