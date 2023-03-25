@@ -50,7 +50,7 @@ app.put("/update", async (req, res) => {
   }
   try {
     await Task.findByIdAndUpdate(taskid, data);
-    let task = await Task.findOne(taskid);
+    let task = await Task.findOne({ _id: taskid });
     return res.status(200).send({ message: "Task updated successfully", task });
   } catch (error) {
     return res.status(404).send({ error: error.message });
