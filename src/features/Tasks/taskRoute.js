@@ -43,11 +43,12 @@ app.delete("/delete", async (req, res) => {
 app.put("/update", async (req, res) => {
   let { id } = req.body;
   let user = await User.findOne({ _id: id });
+  let data = { ...req.body };
+  if (id) {
+    data["assignee"] = user;
+  }
   try {
-    const task = await Task.findByIdAndUpdate(id, {
-      ...req.body,
-      assignee: user,
-    });
+    const task = await Task.findByIdAndUpdate(id, data);
     return res.status(200).send({ message: "Task updated successfully", task });
   } catch (error) {
     return res.status(404).send({ error: error.message });
